@@ -1,6 +1,6 @@
 # mysql
 
-
+## 一. 安装/环境配置/连接数据库/基本命令
 
 1. 安装mysql
 
@@ -42,6 +42,49 @@
    ```js
    数据库连接成功后,可使用 select version(); 来查看数据库的版本
    exit 来退出数据库连接
+   ```
+
+## 二. DDL
+
+
+
+1. 数据库操作
+
+   ```sql
+   # 创建数据库
+   create database 数据库名;
+   
+   # 判断创建数据库
+   create database if not exists 数据库名;
+   
+   # 创建数据库指定字符集
+   create database 数据库名 character set 字符集;
+   
+   # 创建数据库的指定排序方式
+   create database 数据库名 collate 排序方式;
+   
+   # 创建数据库的指定字符集和排序方式
+   create database 数据库名 character set 字符集 collate 排序方式;
+   
+   # mysql8的默认字符集是 utf8mb4_0900_ai_ci
+   
+   # 查看当前数据库的字符集或排序方式
+   show variables like 'character_set_database';
+   show variables like 'collation_database';
+   
+   # 创建一张名为 ddl_d1的表,字符集为utf8,排序规则为区分大小写
+   create database if not exists ddl_d1 character set utf8mb4 collate utf8mb4_0900_as_cs;
+   ```
+
+2. 常见字符集与排序规则
+
+   ```sql
+   字符集: 
+   	utf8: 早起版本的字符集 最多3字节存储一个字符,3字节无法覆盖全部unicode编码,有显示乱码的可能
+       utfmb4(8+默认): 解决了utf8的存储限制,使用4字节进行字符存储,可以覆盖更广的unicode编码,包括表情符号等
+   排序规则: 
+   	utf8mb4_0900_ai_ci: utf-8不区分大小写的排序规则 'a' === 'A'
+   	utf8mb4_0900_as_cs: utf8的unicode的排序规则,区分大小写 'a' !== 'A'
    ```
 
    

@@ -87,4 +87,46 @@
    	utf8mb4_0900_as_cs: utf8的unicode的排序规则,区分大小写 'a' !== 'A'
    ```
 
+3. 查看和使用库
+
+   ```sql
+   # 查看当前所有库
+   show databases;
+   
+   # 查看当前使用的库
+   select database();
+   
+   # 查看指定库下的所有表
+   show tables from 数据库名;
+   
+   # 查看创建库的信息
+   show create database 数据库名;
+   
+   # 切换库
+   use 数据库名;
+   ```
+
+4. 数据库的修改与删除
+
+   ```sql
+   # 数据库的修改
+   
+   # 修改数据库的字符集
+   ALTER DATABASE ddl_d1 CHARACTER set utf8mb4;
+   
+   # 修改数据库的排序规则
+   ALTER DATABASE ddl_d1 COLLATE utf8mb4_0900_as_cs;
+   
+   # 同时修改字符集与排序规则
+   ALTER DATABASE ddl_d1 CHARACTER set utf8mb4 COLLATE utf8mb4_0900_as_cs;
+   
+   # 数据库删除
+   
+   # 直接删除
+   DROP DATABASE ddl_d1;
+   
+   # 判断删除
+   DROP DATABASE IF EXISTS ddl_d1;
+   ```
+
    

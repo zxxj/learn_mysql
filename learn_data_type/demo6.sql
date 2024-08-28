@@ -1,0 +1,11 @@
+# demo 
+
+CREATE TABLE IF NOT EXISTS student(
+	stu_name VARCHAR(10) COMMENT '姓名', 
+	stu_gender CHAR(1) COMMENT '性别', 
+	stu_age TINYINT UNSIGNED COMMENT '年龄', 
+	stu_height  DOUBLE(5,2) COMMENT '身高', 
+	stu_brithday DATETIME COMMENT '生日', 
+	create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+) CHARSET = utf8mb4 COMMENT '综合练习';

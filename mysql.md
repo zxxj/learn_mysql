@@ -264,4 +264,150 @@
    TRUNCATE TABLE test1;
    ```
 
+8. 数据定义篇-demo
+
+   ```sql
+   
+   CREATE TABLE IF NOT EXISTS employess(
+   	emp_num INT(11),
+   	last_name VARCHAR(20),
+   	frist_name VARCHAR(30),
+   	mobile VARCHAR(11),
+   	`code` INT,
+   	job_title VARCHAR(60),
+   	birth DATE,
+   	note VARCHAR(255),
+   	sex VARCHAR(5)
+   ) CHARSET = utf8mb4 COMMENT '数据定义-综合案例';
+   
+   # 查看表结构
+   DESC employess;
+   
+   # 将表的mobile字段修改到code字段后面
+   ALTER TABLE employess MODIFY mobile VARCHAR(11) AFTER `CODE`;
+   
+   # 将表的brith字段修改为brithday
+   ALTER TABLE employess CHANGE birth brithday DATE;
+   
+   # 修改sex字段,数据类型为char(1)
+   ALTER TABLE employess MODIFY sex CHAR(1);
+   
+   # 删除字段note
+   ALTER TABLE employess DROP note;
+   
+   # 增加字段名height,数据类型为double(4,1)
+   ALTER TABLE employess ADD height DOUBLE(4,1);
+   
+   # 将表名修改为test
+   ALTER TABLE employess RENAME test;
+   ```
+
+
+## 三.DML(数据操作语句)
+
+1. DML介绍
+
+   ```sql
+   DML是数据操作语句简写
+   DML用于操作数据库的数据插入,删除,更新这三种操作
+   DML不会影响数据库中的表结构,但会影响数据库中的数据
+   
+   'INSERT': 用于数据插入关键字
+   'UPDATE': 用于数据修改关键字
+   'DELETE': 用于数据删除关键字
+   ```
+
+2. INSERT(插入)
+
+   ```sql
+   -- 写法1: 为表的一行所有字段(列),插入数据
+   -- 值列表中需要为表的每一个字段指定值,并且值的顺序必须和数据表中的字段定义时的顺序相同
+   INSERT INTO 表名 VALUES(value1, value2,...);
+   
+   -- 写法2: 为表的一行指定字段(列),插入数据
+   -- 值列表中需要为表名后指定的列指定值,并且值的顺序和类型必须和指定的列顺序相同
+   INSERT INTO 表名 (列名1, 列名2,...) VALUES (value1,value2,...);
+   
+   -- 同时插入多条记录
+   INSERT INTO 表名 VALUES(value1, value2,...), (value1, value2,...);
+   INSERT INTO 表名 (列名1, 列名2,...) VALUES (value1,value2,...), (value1, value2, ...);
+   
+   -- demo
+   
+   -- 创建数据库
+   CREATE DATABASE IF NOT EXISTS dml_test;
+   
+   -- 创建学习inset插入的表
+   CREATE TABLE IF NOT EXISTS students(
+   	stu_name VARCHAR(22) COMMENT '学生姓名',
+   	stu_age INT COMMENT '学生年龄',
+   	stu_id_number LONG COMMENT '学号',
+   	stu_height DOUBLE(4,1) COMMENT '学生身高, 保留1位小数',
+   	stu_brithday DATE COMMENT '学生生日'
+   ) CHARSET utf8mb4;
+   
+   -- 1.插入一名学生的所有信息
+   -- 写法1
+   INSERT INTO students VALUES('zhangxin', 15, 100, 155.5, '1997-09-10')
+   -- 写法2(推荐)
+   INSERT INTO students (stu_id_number, stu_name, stu_age, stu_height, stu_brithday) VALUES (101,'zhangxinxin', 18, 188.8, '1999-10-1');
+   
+   -- 2.插入一名学生的学号,名字,年龄,其他列使用默认值
+   INSERT INTO students (stu_id_number, stu_name, stu_age) VALUES (102, 'jay', 23);
+   
+   -- 3.插入两名学生的信息,包含学号,名字,年龄,生日和身高
+   INSERT INTO students (stu_id_number, stu_name, stu_age, stu_brithday, stu_height) VALUES (103, 'jack', 30, '2000-10-03', 177.7), (104, 'kobe', 40, '2001-03-20', 201.3);
+   
+   -- 4.插入一名学生的信息,只提供学号,名字和年龄,其他列为空值
+   INSERT INTO students (stu_id_number, stu_name, stu_age, stu_height, stu_brithday) VALUES (104, 'james', 35, NULL, NULL);
+   ```
+
+3. UPDATE(修改)
+
+   ```sql
+   -- 创建表,学习dml的修改操作
+   CREATE TABLE IF NOT EXISTS profile(
+   	profile_name VARCHAR(10) COMMENT '姓名',
+   	profile_age TINYINT UNSIGNED COMMENT '年龄',
+   	profile_brithday DATE COMMENT '生日',
+   	profile_height DOUBLE(4,1) COMMENT '身高'
+   ) CHARSET utf8mb4;
+   
+   -- 条件修改
+   -- 1.将姓名为谭安琪的人的年龄修改为30
+   UPDATE profile SET profile_age = 30 WHERE profile_name = "谭安琪";
+   
+   -- 2.将所有小于30岁的人的身高在原有身高基础上增加2.0厘米
+   UPDATE profile SET profile_height = profile_height + 2 WHERE profile_age < 30;
+   
+   -- 3.将姓名为沈嘉伦的人的年龄修改为33岁,生日修改为2003-08-15
+   UPDATE profile SET profile_age = 33, profile_brithday = '2003-08-15' WHERE profile_name = '沈嘉伦';
+   
+   -- 全表修改
+   -- 4.将所有人的年龄增加1岁
+   UPDATE profile SET profile_age = profile_age + 1;
+   ```
+
+4. DELETE(删除)
+
+   ```sql
+   SELECT * FROM `students`
+   
+   -- dml,学习update
+   
+   -- 1.将年龄大于23的人删除
+   DELETE FROM students WHERE stu_age > 23;
+   
+   -- 2.将学号为102并且年龄为23的人删除
+   DELETE FROM students WHERE stu_id_number = 102 AND stu_age = 23;
+   
+   -- 3.将学号为100或年龄为15的人删除
+   DELETE FROM students WHERE stu_id_number = 100 OR stu_age = 15;
+   
+   -- 4.将所有数据删除
+   DELETE FROM students;
+   
+   -- delete删除和清空表truncate删除都会删除表中的全部数据,truncate不仅会删除表数据,也会删除数据库id的最大记录值
+   ```
+
    
